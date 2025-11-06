@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Generated reports
+*_report.json
+*_report.md
+audit_report_*.json
+audit_report_*.md
+code_security_report.json
+code_security_report.md
+example_audit_report.json
+example_audit_report.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Temporary files
+*.tmp
+*.log
