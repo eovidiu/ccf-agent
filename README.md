@@ -55,12 +55,6 @@ or
 Use the ccf-security-auditor skill to assess our application
 ```
 
-**Skill Documentation:**
-- 📖 [`.claude/skills/README.md`](.claude/skills/README.md) - Complete skill documentation
-- 🚀 [`.claude/QUICK_REFERENCE.md`](.claude/QUICK_REFERENCE.md) - Quick reference card
-- 📋 [`.claude/SKILLS_USAGE.md`](.claude/SKILLS_USAGE.md) - Detailed usage guide
-- 📊 [`CCF_COVERAGE_ANALYSIS.md`](CCF_COVERAGE_ANALYSIS.md) - Framework coverage analysis
-
 ## Features
 
 - **317 Security Controls** across **25 Control Domains**
@@ -76,18 +70,13 @@ Use the ccf-security-auditor skill to assess our application
 
 ```
 .
-├── .claude/                              # Claude Code Skills (Primary Interface)
-│   ├── skills/
-│   │   ├── ccf-security-auditor/
-│   │   │   └── SKILL.md                 # Comprehensive security assessment skill
-│   │   ├── ccf-quick-scan/
-│   │   │   └── SKILL.md                 # Fast code security scan skill
-│   │   ├── ccf-remediation-helper/
-│   │   │   └── SKILL.md                 # Security remediation guidance skill
-│   │   └── README.md                    # Skills documentation
-│   ├── skills.json                      # Skills manifest and metadata
-│   ├── QUICK_REFERENCE.md               # Quick reference card
-│   └── SKILLS_USAGE.md                  # Detailed usage guide
+├── .claude/skills/                       # Claude Code Skills (Primary Interface)
+│   ├── ccf-security-auditor/
+│   │   └── SKILL.md                     # Comprehensive security assessment skill
+│   ├── ccf-quick-scan/
+│   │   └── SKILL.md                     # Fast code security scan skill
+│   └── ccf-remediation-helper/
+│       └── SKILL.md                     # Security remediation guidance skill
 │
 ├── adobe-ccf/
 │   └── Open_Source_CCF.xls              # Adobe CCF framework data (official)
@@ -98,16 +87,11 @@ Use the ccf-security-auditor skill to assess our application
 │   ├── security_auditor.py              # Core assessment engine and reporting
 │   ├── questionnaire.py                 # Domain-specific questions (65 questions)
 │   ├── code_scanner.py                  # Automated code security scanner
-│   ├── ccf_auditor_cli.py               # Interactive CLI interface
-│   └── example_audit.py                 # Example programmatic usage
+│   └── ccf_auditor_cli.py               # Interactive CLI interface
 │
 ├── Documentation:
 │   ├── README.md                        # Main documentation (this file)
-│   ├── QUICKSTART.md                    # 5-minute setup guide
-│   └── CCF_COVERAGE_ANALYSIS.md         # Detailed coverage analysis
-│
-└── Configuration:
-    └── .gitignore                       # Ignore reports and cache files
+│   └── .gitignore                       # Ignore generated reports and cache files
 ```
 
 ## Installation
