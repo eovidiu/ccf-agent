@@ -9,7 +9,7 @@ Perform fast automated security scans of code repositories using Adobe Common Co
 
 ## What This Does
 
-Run automated security scanner that checks for:
+Scan code repositories for security vulnerabilities:
 - Hardcoded secrets and credentials (API keys, passwords, tokens)
 - Weak cryptography (MD5, SHA1, DES, RC4)
 - Authentication and authorization issues
@@ -24,11 +24,63 @@ Run automated security scanner that checks for:
 
 To perform a quick scan:
 
-1. **Identify Target:** Ask user for repository path to scan
+1. **Identify Target:** Determine repository path to scan (ask user if not provided)
 2. **Get System Name:** Request system name (optional, defaults to directory name)
-3. **Run Scanner:** Execute `python3 code_scanner.py <repository_path> "System Name"`
-4. **Analyze Results:** Review generated `code_security_report.json` and `code_security_report.md`
-5. **Present Summary:** Show score, findings count, and top issues
+3. **Scan for Security Issues:** Use Grep tool to search for security patterns across codebase
+4. **Analyze Findings:** Review and categorize findings by severity
+5. **Calculate Score:** Score 0-100 based on findings (Critical findings = 0 points each, High = 5 points deducted, Medium = 2 points, Low = 0.5 points)
+6. **Present Summary:** Show score, findings count, and top issues
+
+## Security Patterns to Search
+
+Use Grep tool with these patterns:
+
+**Hardcoded Secrets (CRITICAL - CCF: IAM-05, DM-10):**
+```
+Pattern: (api[_-]?key|password|secret|token|auth|credential)[\s]*[=:][\s]*[\"'][^\"']{8,}
+Pattern: (sk-|pk-|AIza|AKIA|ghp_|gho_|ghs_|ghr_)[\w]{20,}
+```
+
+**Weak Cryptography (HIGH - CCF: CRY-02, CRY-04):**
+```
+Pattern: (MD5|SHA1|SHA-1|DES|3DES|RC4|RC2)[\s]*\(
+Pattern: hashlib\.(md5|sha1)
+Pattern: crypto\.(MD5|DES)
+```
+
+**SQL Injection Risk (CRITICAL - CCF: DM-11):**
+```
+Pattern: (execute|query|raw)[\s]*\([^?]*[+][\s]*[a-zA-Z_]
+Pattern: SELECT.*FROM.*\+
+Pattern: cursor\.execute\([^,]*%
+```
+
+**Missing HTTPS/TLS (HIGH - CCF: DM-10):**
+```
+Pattern: http://(?!localhost|127\.0\.0\.1)
+Pattern: verify[\s]*=[\s]*False
+Pattern: ssl[\s]*=[\s]*False
+```
+
+**Missing Input Validation (MEDIUM - CCF: DM-11):**
+```
+Pattern: eval\(
+Pattern: exec\(
+Pattern: innerHTML[\s]*=
+Pattern: dangerouslySetInnerHTML
+```
+
+**Inadequate Logging (MEDIUM - CCF: SM-01):**
+```
+Pattern: (login|auth|access|admin).*(?!log|audit)
+Check: Do security events have logging?
+```
+
+**Insecure Dependencies (MEDIUM - CCF: AM-01):**
+```
+Check: requirements.txt, package.json for known vulnerable versions
+Check: Outdated or deprecated packages
+```
 
 ## Output Format
 
@@ -46,62 +98,76 @@ Present results in this format:
 ℹ️  Low Priority: N
 
 Top Issues:
-1. [PRIORITY] Issue Title
+1. [PRIORITY] Issue Title (CCF Control: XX-XX)
+   Location: file.py:123
    → Brief description and recommendation
 
-2. [PRIORITY] Issue Title
+2. [PRIORITY] Issue Title (CCF Control: XX-XX)
+   Location: file.js:45
    → Brief description and recommendation
 
-3. [PRIORITY] Issue Title
+3. [PRIORITY] Issue Title (CCF Control: XX-XX)
+   Location: config.yaml:12
    → Brief description and recommendation
-
-📄 Full report: code_security_report.md
 ```
 
-## Score Interpretation
+## Score Calculation
 
-- 90-100: Excellent - Strong security
+Start with 100 points, deduct:
+- Critical finding: 20 points each
+- High finding: 5 points each
+- Medium finding: 2 points each
+- Low finding: 0.5 points each
+
+**Score Interpretation:**
+- 90-100: Excellent - Strong security posture
 - 75-89: Good - Solid with minor gaps
 - 60-74: Fair - Several improvements needed
-- 40-59: Poor - Significant gaps
+- 40-59: Poor - Significant security gaps
 - 0-39: Critical - Immediate action required
 
 ## Common Findings and Recommendations
 
 **Hardcoded Secrets (CRITICAL):**
-- Move to environment variables or secrets manager
-- Remove from git history
+- Move to environment variables or secrets manager (AWS Secrets Manager, HashiCorp Vault)
+- Remove from git history using git-filter-repo or BFG
 - Rotate exposed credentials immediately
+- CCF Controls: IAM-05, DM-10
 
 **Weak Cryptography (HIGH):**
 - Upgrade MD5/SHA1 to SHA-256 or higher
-- Replace DES/RC4 with AES-256
-- Use bcrypt/scrypt/argon2 for passwords
+- Replace DES/RC4 with AES-256-GCM
+- Use bcrypt/scrypt/argon2 for password hashing
+- CCF Controls: CRY-02, CRY-04
 
 **Missing Encryption in Transit (HIGH):**
-- Enforce HTTPS/TLS for all communications
+- Enforce HTTPS/TLS 1.2+ for all communications
 - Disable HTTP endpoints
-- Use TLS 1.2 or higher
+- Enable certificate validation
+- CCF Control: DM-10
 
 **SQL Injection (CRITICAL):**
-- Use parameterized queries
-- Implement input validation
+- Use parameterized queries/prepared statements
+- Implement input validation and sanitization
 - Apply principle of least privilege
+- CCF Control: DM-11
 
 **Missing MFA (HIGH):**
 - Implement multi-factor authentication
-- Start with privileged accounts
+- Start with privileged accounts first
 - Extend to all user accounts
+- CCF Control: IAM-05
 
-**No Logging (MEDIUM):**
-- Implement structured logging
-- Log security events
+**Inadequate Logging (MEDIUM):**
+- Implement structured logging for security events
+- Log authentication, authorization, and access events
 - Centralize log collection
+- CCF Control: SM-01
 
 ## Mapped CCF Controls
 
-This scan directly assesses:
-- AM-01: Asset Management
+Load control details from ccf_data.json for:
+- AM-01: Inventory Management
 - IAM-05: Multi-Factor Authentication
 - CRY-02: Key Management
 - CRY-04: Cryptographic Algorithms
@@ -112,48 +178,61 @@ This scan directly assesses:
 ## When to Use This Skill
 
 Use ccf-quick-scan for:
-- Quick security baseline
+- Quick security baseline assessment
 - Code review checkpoint
 - Pre-commit security check
-- PR approval gate
+- Pull request security gate
 - Initial security screening
 - Regular security monitoring
+- Fast vulnerability identification
 
 ## Follow-Up Actions
 
 After presenting results, offer to:
 1. Explain specific findings in detail
-2. Provide remediation code examples
-3. Conduct full CCF audit (use ccf-security-auditor skill)
-4. Create remediation tasks
-5. Re-scan after fixes (to verify improvements)
+2. Provide remediation code examples (use ccf-remediation-helper skill)
+3. Conduct full CCF audit covering all 317 controls (use ccf-security-auditor skill)
+4. Create detailed remediation plan
+5. Re-scan after fixes to verify improvements
 
 ## Example Invocation
 
 **User:** "Scan this repository for security issues"
 
 **Action:**
-1. Identify repository path (current directory or specified path)
-2. Execute: `python3 code_scanner.py . "Project Name"`
-3. Wait for scan completion (~2-5 minutes)
-4. Parse code_security_report.json
-5. Present formatted results
-6. Highlight top 3-5 critical/high priority issues
-7. Offer to help with remediation
+1. Identify repository path (current directory if not specified)
+2. Get system name from user or use directory name
+3. Use Grep tool to search for each security pattern
+4. Use Glob to find configuration files (package.json, requirements.txt, etc.)
+5. Categorize findings by severity
+6. Calculate security score
+7. Present formatted results with top 3-5 critical/high priority issues
+8. Reference relevant CCF controls from ccf_data.json
+9. Offer remediation assistance
 
 ## Limitations
 
-- Automated scan only - some findings may be false positives
-- Static analysis - does not perform runtime testing
+Communicate these limitations to users:
+- Static analysis only - does not perform runtime testing
+- Pattern-based detection - may have false positives
 - Technical controls only - organizational/process controls not assessed
-- Pattern-based detection - may miss context-specific issues
+- May miss context-specific or business logic vulnerabilities
+- Not a substitute for penetration testing or comprehensive audit
 
 ## Workflow Integration
 
 Suggest integration options:
-- Pre-commit hook
+- Pre-commit security hook
 - CI/CD pipeline security gate
-- Weekly automated scans
-- PR approval requirement
+- Scheduled weekly/monthly scans
+- Pull request approval requirement
+- Security baseline for new projects
 
-Remember: This is a quick technical check. For comprehensive assessment covering all 317 CCF controls across 25 domains, recommend using the `ccf-security-auditor` skill instead.
+## Next Steps
+
+After completing quick scan, recommend:
+- For comprehensive assessment: Use `ccf-security-auditor` skill (all 317 controls across 25 domains)
+- For fixing issues: Use `ccf-remediation-helper` skill with specific CCF control IDs
+- For compliance reporting: Generate full CCF assessment report
+
+Remember: This is a technical quick scan focused on code-level vulnerabilities. For organizational processes, policies, and comprehensive compliance assessment, use the `ccf-security-auditor` skill.
