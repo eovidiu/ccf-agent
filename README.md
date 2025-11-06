@@ -78,9 +78,12 @@ Use the ccf-security-auditor skill to assess our application
 .
 ├── .claude/                              # Claude Code Skills (Primary Interface)
 │   ├── skills/
-│   │   ├── ccf-security-auditor.md      # Comprehensive security assessment skill
-│   │   ├── ccf-quick-scan.md            # Fast code security scan skill
-│   │   ├── ccf-remediation-helper.md    # Security remediation guidance skill
+│   │   ├── ccf-security-auditor/
+│   │   │   └── SKILL.md                 # Comprehensive security assessment skill
+│   │   ├── ccf-quick-scan/
+│   │   │   └── SKILL.md                 # Fast code security scan skill
+│   │   ├── ccf-remediation-helper/
+│   │   │   └── SKILL.md                 # Security remediation guidance skill
 │   │   └── README.md                    # Skills documentation
 │   ├── skills.json                      # Skills manifest and metadata
 │   ├── QUICK_REFERENCE.md               # Quick reference card

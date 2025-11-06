@@ -2,6 +2,25 @@
 
 This directory contains Claude Code skills for conducting security assessments using the Adobe Common Controls Framework (CCF).
 
+## Skill Structure
+
+Each skill follows Anthropic's official specification:
+
+```
+.claude/skills/
+├── ccf-security-auditor/
+│   └── SKILL.md              # Skill definition with YAML frontmatter
+├── ccf-quick-scan/
+│   └── SKILL.md              # Skill definition with YAML frontmatter
+└── ccf-remediation-helper/
+    └── SKILL.md              # Skill definition with YAML frontmatter
+```
+
+Each `SKILL.md` file contains:
+- **YAML frontmatter** with `name` and `description`
+- **Instructions** in imperative form for AI consumption
+- **Examples** and guidelines for usage
+
 ## Available Skills
 
 ### 1. `ccf-security-auditor` - Comprehensive Security Assessment
