@@ -20,6 +20,43 @@ This tool provides **two modes** of operation:
 1. **Interactive Audit Mode**: Guided questionnaire-based security assessment
 2. **Automated Code Scanner Mode**: Automated analysis of code repositories
 
+## 🎯 Quick Start: Use as Claude Code Skills
+
+This tool includes **Claude Code skills** for seamless integration with Claude Code:
+
+### Available Skills
+
+1. **`ccf-security-auditor`** - Comprehensive security assessment
+   - Full end-to-end security audit with guided questionnaire
+   - Systematic domain-by-domain control review
+   - Scored reports with gap analysis
+
+2. **`ccf-quick-scan`** - Fast automated code security scan
+   - Quick security check in 2-5 minutes
+   - Detects hardcoded secrets, weak crypto, vulnerabilities
+   - Immediate actionable feedback
+
+3. **`ccf-remediation-helper`** - Security issue remediation
+   - Step-by-step guidance to fix security findings
+   - Working code examples and configurations
+   - Testing and validation support
+
+### Using the Skills
+
+Simply invoke a skill in your Claude Code conversation:
+
+```
+Use the ccf-quick-scan skill to scan this repository
+```
+
+or
+
+```
+Use the ccf-security-auditor skill to assess our application
+```
+
+See [`.claude/skills/README.md`](.claude/skills/README.md) for detailed skill documentation.
+
 ## Features
 
 - **317 Security Controls** across **25 Control Domains**
@@ -34,14 +71,24 @@ This tool provides **two modes** of operation:
 ## Architecture
 
 ```
-adobe-ccf/
-├── Open_Source_CCF.xls          # Adobe CCF framework data
+.
+├── .claude/
+│   └── skills/                   # Claude Code Skills
+│       ├── ccf-security-auditor.md      # Full security assessment skill
+│       ├── ccf-quick-scan.md            # Quick code scan skill
+│       ├── ccf-remediation-helper.md    # Remediation guidance skill
+│       └── README.md                    # Skills documentation
+├── adobe-ccf/
+│   └── Open_Source_CCF.xls       # Adobe CCF framework data
 ├── ccf_parser.py                 # Excel parser for CCF data
+├── ccf_data.json                 # Parsed CCF data (317 controls)
 ├── security_auditor.py           # Core auditor framework
 ├── questionnaire.py              # Interactive question engine
 ├── code_scanner.py               # Automated code analysis
-├── ccf_auditor_cli.py           # Interactive CLI interface
-└── README.md                     # This file
+├── ccf_auditor_cli.py            # Interactive CLI interface
+├── example_audit.py              # Example usage
+├── README.md                     # This file
+└── QUICKSTART.md                 # Quick start guide
 ```
 
 ## Installation
