@@ -1,76 +1,72 @@
 # Adobe CCF Security Auditor
 
-A comprehensive security review and assessment tool based on the **Adobe Common Controls Framework (CCF)**. This tool enables organizations to systematically evaluate their security posture, identify gaps, and generate detailed security audit reports.
+A comprehensive security assessment toolkit based on the **Adobe Common Controls Framework (CCF)**. This repository provides **Claude Code Skills** that enable organizations to systematically evaluate their security posture, identify gaps, and generate detailed security audit reports using Claude's native capabilities.
 
 ## Overview
 
-The Adobe Common Controls Framework (CCF) is a comprehensive and rationalized set of security and privacy controls that maps to multiple industry standards, regulations, and certifications including:
+The Adobe Common Controls Framework (CCF) is a comprehensive and rationalized set of 317 security and privacy controls across 25 domains that maps to multiple industry standards, regulations, and certifications including:
 
 - ISO 27001
 - SOC 2
 - PCI-DSS
 - FedRAMP
 - HIPAA
+- GDPR
 - NIST Cybersecurity Framework
 - CIS Controls
-- And more...
+- And 20+ more frameworks
 
-This tool provides **two modes** of operation:
+## 🎯 Quick Start: Claude Code Skills
 
-1. **Interactive Audit Mode**: Guided questionnaire-based security assessment
-2. **Automated Code Scanner Mode**: Automated analysis of code repositories
-
-## 🎯 Quick Start: Use as Claude Code Skills
-
-This tool includes **Claude Code skills** for seamless integration with Claude Code:
+This repository provides **three Claude Code Skills** for security assessment and remediation:
 
 ### Available Skills
 
-1. **`ccf-security-auditor`** - Comprehensive security assessment
+1. **`ccf-security-auditor`** - Comprehensive Security Assessment
    - Full end-to-end security audit with guided questionnaire
-   - Systematic domain-by-domain control review
-   - Scored reports with gap analysis
+   - Systematic review across 317 controls and 25 domains
+   - Scored reports (0-100) with gap analysis
+   - Multiple assessment modes: interactive, code-focused, domain-specific, compliance-focused
+   - Generates detailed markdown and JSON reports
 
-2. **`ccf-quick-scan`** - Fast automated code security scan
-   - Quick security check in 2-5 minutes
-   - Detects hardcoded secrets, weak crypto, vulnerabilities
-   - Immediate actionable feedback
+2. **`ccf-quick-scan`** - Fast Automated Code Security Scan
+   - Quick security baseline in 2-5 minutes
+   - Detects hardcoded secrets, weak cryptography, SQL injection risks
+   - Missing encryption, input validation gaps, logging deficiencies
+   - Immediate scored results with prioritized findings
+   - Maps findings to specific CCF controls
 
-3. **`ccf-remediation-helper`** - Security issue remediation
+3. **`ccf-remediation-helper`** - Security Issue Remediation
    - Step-by-step guidance to fix security findings
-   - Working code examples and configurations
-   - Testing and validation support
+   - Working code examples and secure configurations
+   - Technology-specific guidance (Python, JavaScript, Cloud, Kubernetes, Databases)
+   - Testing procedures and validation checklists
+   - Effort estimates and prioritization support
 
-### Using the Skills
+### Using the Skills in Claude Code
 
 Simply invoke a skill in your Claude Code conversation:
 
+**For a quick code security scan:**
 ```
-Use the ccf-quick-scan skill to scan this repository
-```
-
-or
-
-```
-Use the ccf-security-auditor skill to assess our application
+Use the ccf-quick-scan skill to scan this repository for security issues
 ```
 
-## Features
+**For a comprehensive security assessment:**
+```
+Use the ccf-security-auditor skill to conduct a full security audit
+```
 
-- **317 Security Controls** across **25 Control Domains**
-- **Interactive Questionnaire** with domain-specific questions
-- **Automated Code Scanning** for security issues
-- **Gap Analysis** and prioritized findings
-- **Security Scoring** (0-100) overall and by domain
-- **Comprehensive Reports** in JSON and Markdown formats
-- **Compliance Mapping** to major security frameworks
-- **Risk-Based Prioritization** (Critical, High, Medium, Low)
+**For help fixing a specific security issue:**
+```
+Use the ccf-remediation-helper skill to help me fix IAM-05: Missing MFA
+```
 
 ## Architecture
 
 ```
 .
-├── .claude/skills/                       # Claude Code Skills (Primary Interface)
+├── .claude/skills/                       # Claude Code Skills
 │   ├── ccf-security-auditor/
 │   │   └── SKILL.md                     # Comprehensive security assessment skill
 │   ├── ccf-quick-scan/
@@ -79,381 +75,334 @@ Use the ccf-security-auditor skill to assess our application
 │       └── SKILL.md                     # Security remediation guidance skill
 │
 ├── adobe-ccf/
-│   └── Open_Source_CCF.xls              # Adobe CCF framework data (official)
+│   └── Open_Source_CCF.xls              # Adobe CCF v5 framework data (official)
 │
-├── Python Tools (Skill Backend):
-│   ├── ccf_parser.py                    # Parse CCF Excel into structured data
-│   ├── ccf_data.json                    # Parsed CCF data (317 controls, 25 domains)
-│   ├── security_auditor.py              # Core assessment engine and reporting
-│   ├── questionnaire.py                 # Domain-specific questions (65 questions)
-│   ├── code_scanner.py                  # Automated code security scanner
-│   └── ccf_auditor_cli.py               # Interactive CLI interface
+├── ccf_data.json                        # Parsed CCF data (317 controls, 25 domains, 399 evidence items)
 │
-├── Documentation:
-│   ├── README.md                        # Main documentation (this file)
-│   └── .gitignore                       # Ignore generated reports and cache files
+├── README.md                            # This file
+├── VERIFICATION_REPORT.md               # CCF and Anthropic spec compliance verification
+└── .gitignore                           # Ignore generated reports
 ```
 
-## Installation
+## Features
 
-### Prerequisites
+### ccf-security-auditor
 
-- Python 3.7+
-- pip
+- **317 Security Controls** across **25 Control Domains**
+- **4 Assessment Modes:**
+  - Comprehensive Interactive Audit (2-4 hours)
+  - Code-Focused Assessment (30-60 minutes)
+  - Domain-Specific Assessment (30-90 minutes per domain)
+  - Compliance Gap Analysis (1-3 hours)
+- **Question-Based Evidence Collection** with 100+ domain-specific questions
+- **Security Scoring** (0-100) overall and by domain
+- **Comprehensive Reports** with executive summary, scorecard, findings, remediation roadmap
+- **Compliance Framework Mapping** to ISO 27001, SOC 2, PCI-DSS, HIPAA, GDPR, FedRAMP, and more
+- **Risk-Based Prioritization** (Critical, High, Medium, Low)
+- **Gap Analysis** with actionable recommendations
 
-### Setup
+### ccf-quick-scan
 
-```bash
-# Install required dependencies
-pip install xlrd openpyxl pandas
+- **Fast Pattern-Based Scanning** using native Claude tools (Grep, Read, Glob)
+- **Security Pattern Detection:**
+  - Hardcoded secrets and credentials
+  - Weak cryptography (MD5, SHA1, DES, RC4)
+  - SQL injection risks
+  - Missing HTTPS/TLS
+  - Missing input validation
+  - Inadequate logging
+  - Insecure dependencies
+- **Scored Results** (0-100) with severity categorization
+- **CCF Control Mapping** to AM-01, IAM-05, CRY-02, CRY-04, DM-10, DM-11, SM-01
+- **Immediate Findings** with file locations and line numbers
 
-# Parse CCF data (one-time setup)
-python3 ccf_parser.py
+### ccf-remediation-helper
 
-# This generates ccf_data.json which is used by the auditor
-```
+- **Step-by-Step Remediation Workflow**
+- **Working Code Examples** in Python, JavaScript, and other languages
+- **Technology-Specific Guidance:**
+  - Cloud platforms (AWS, Azure, GCP)
+  - Kubernetes
+  - Databases (PostgreSQL, MySQL, etc.)
+  - Web applications
+- **Common Remediation Patterns:**
+  - Hardcoded secrets → Environment variables/Secrets manager
+  - Weak crypto → Strong crypto
+  - SQL injection → Parameterized queries
+  - Missing MFA → MFA implementation
+  - Missing logging → Comprehensive logging
+- **Effort Estimates** and prioritization guidance
+- **Testing and Validation** procedures
 
-## Usage
+## How It Works
 
-### Mode 1: Interactive Audit (Recommended for Comprehensive Audits)
+### Native Claude Integration
 
-Run the interactive CLI to conduct a guided security assessment:
+These skills leverage Claude's native tools instead of external scripts:
 
-```bash
-python3 ccf_auditor_cli.py
-```
+- **Read tool:** Access CCF control definitions from ccf_data.json
+- **Grep tool:** Search code for security patterns and vulnerabilities
+- **Glob tool:** Find configuration files, dependencies, and sensitive files
+- **Read tool:** Analyze specific code files for security assessment
 
-#### Workflow:
+This native approach provides:
+- **Fast execution** without external dependencies
+- **Better context awareness** from Claude's understanding
+- **Seamless integration** with Claude Code workflows
+- **No installation required** - works out of the box
+
+### Assessment Workflow (ccf-security-auditor)
 
 1. **Scoping & Information Gathering**
-   - System name and primary function
-   - Data types (PII, payment data, etc.)
+   - System identity and criticality
+   - Data classification (PII, PHI, Payment Card Data)
    - Architecture and deployment environment
    - Compliance requirements
-   - User base and criticality
+   - User base and resources
 
-2. **Systematic Security Review**
-   - Choose domains to assess (all or specific)
-   - Answer targeted questions for each domain
-   - Provide evidence and identify gaps
-   - Real-time compliance status tracking
+2. **Systematic Control Review**
+   - Load controls from ccf_data.json
+   - Ask domain-specific questions
+   - Collect evidence and documentation
+   - Assess compliance status (Compliant/Partial/Non-Compliant/N/A)
 
-3. **Report Generation**
-   - Overall security score (0-100)
-   - Domain-specific scores
-   - Prioritized findings and recommendations
-   - Detailed gap analysis
-   - Remediation guidance
+3. **Evidence Collection & Gap Analysis**
+   - Document current state
+   - Identify gaps and deficiencies
+   - Create prioritized findings
+   - Map to compliance frameworks
 
-#### Example Session:
+4. **Scoring & Reporting**
+   - Calculate domain and overall scores
+   - Generate executive summary
+   - Create domain scorecard
+   - Provide remediation roadmap
+   - Map compliance gaps
 
-```
-================================================================================
-  Adobe Common Controls Framework (CCF) Security Auditor
-  Comprehensive Security Assessment Tool
-================================================================================
-
-Phase 1: Scoping & Information Gathering
---------------------------------------------------------------------------------
-
-What is the name of the system being audited?: My Web Application
-
-What is the primary function of the system?
-  1. Web application
-  2. API service
-  3. Mobile app
-  4. Database system
-  5. Other (specify)
-
-Your choice: 1
-
-[... continues with more questions ...]
-```
-
-### Mode 2: Automated Code Scanner (Quick Assessment)
-
-Scan a code repository for security issues automatically:
-
-```bash
-python3 code_scanner.py <repository_path> [system_name]
-```
-
-#### Example:
-
-```bash
-python3 code_scanner.py /path/to/your/repo "My Application"
-```
-
-#### What It Scans:
-
-- **Authentication Issues**: Hardcoded credentials, weak password checks
-- **Cryptography**: Weak algorithms (MD5, SHA1, DES, RC4)
-- **Secrets Management**: API keys, tokens, private keys in code
-- **Data Protection**: Encryption at rest and in transit
-- **Input Validation**: SQL injection risks, XSS vulnerabilities
-- **Logging & Monitoring**: Audit logs, security events
-- **Configuration**: Environment variables, config files
-- **Dependencies**: Third-party package management
-- **API Security**: CORS, rate limiting, authentication
-- **Error Handling**: Exception management, error exposure
-
-#### Output:
-
-```
-================================================================================
-  Adobe CCF Security Code Scanner
-================================================================================
-
-Scanning repository: /path/to/repo
-  → Scanning asset management...
-  → Scanning authentication...
-  → Scanning cryptography...
-  → Scanning data protection...
-  → Scanning for secrets...
-  → Scanning logging and monitoring...
-  → Scanning input validation...
-  [...]
-
-✓ Scan complete!
-✓ Report saved: code_security_report.json
-✓ Markdown report: code_security_report.md
-
-Overall Score: 67.5/100
-Findings: 8
-```
-
-## Report Formats
-
-### JSON Report
-
-Machine-readable format containing:
-- Complete scope information
-- All control assessments
-- Findings with priorities
-- Domain and overall scores
-- Executive summary
-- Recommendations
-
-```json
-{
-  "scope": { ... },
-  "assessment_date": "2024-03-01 10:30:00",
-  "overall_score": 75.5,
-  "domain_scores": { ... },
-  "assessments": [ ... ],
-  "findings": [ ... ]
-}
-```
-
-### Markdown Report
-
-Human-readable format with:
-- Executive summary
-- Security score dashboard
-- Key findings by priority
-- Detailed control assessments
-- Prioritized recommendations
+5. **Next Steps & Follow-Up**
+   - Present findings
+   - Prioritize actions
+   - Offer remediation support (via ccf-remediation-helper)
+   - Plan re-assessment
 
 ## Control Domains
 
-The tool covers 25 CCF control domains:
+The CCF covers 25 comprehensive security domains:
 
-1. **Asset Management** (13 controls) - Inventory and lifecycle management
-2. **Identity and Access Management** (39 controls) - Authentication, authorization, MFA
-3. **Data Management** (22 controls) - Data classification, encryption, DLP
-4. **Cryptography** (15 controls) - Encryption standards, key management
-5. **Application Security** (via Configuration Management) - Secure coding, testing
-6. **Vulnerability Management** (23 controls) - Scanning, patching, pentesting
-7. **Systems Monitoring** (32 controls) - Logging, SIEM, alerting
-8. **Network Operations** (18 controls) - Firewalls, segmentation, IDS/IPS
-9. **Incident Response** (8 controls) - IR plan, detection, response
-10. **Business Continuity** (6 controls) - BCP, RTO/RPO, DR
-11. **Configuration Management** (15 controls) - Hardening, baselines
-12. **Change Management** (4 controls) - Change control, approval
-13. **Third-Party Management** (13 controls) - Vendor assessment, contracts
-14. **Security Governance** (17 controls) - Policies, governance body
-15. **Risk Management** (10 controls) - Risk assessment, tracking
-16. **Training and Awareness** (9 controls) - Security training
-17. **Privacy** (10 controls) - Privacy controls and compliance
-18. **Backup Management** (5 controls) - Backup procedures
-19. **Mobile Device Management** (4 controls) - MDM controls
-20. **Physical Security** (Site Operations - 16 controls)
-21. **People Resources** (10 controls) - HR security
-22. **Proactive Security** (4 controls) - Threat intelligence
-23. **Service Lifecycle** (7 controls) - SDLC security
-24. **System Design Documentation** (2 controls)
-25. **Customer Managed Security** (4 controls)
+1. **Identity and Access Management** (39 controls) - MFA, RBAC, access reviews
+2. **Data Management** (22 controls) - Classification, encryption, DLP
+3. **Cryptography** (15 controls) - Algorithms, key management, certificates
+4. **Application Security** (19 controls) - Secure SDLC, code review, testing
+5. **Vulnerability Management** (23 controls) - Scanning, patching, pentesting
+6. **Systems Monitoring** (32 controls) - Logging, SIEM, alerting
+7. **Network Operations** (18 controls) - Firewalls, segmentation, IDS/IPS
+8. **Incident Response** (8 controls) - IR plan, detection, response team
+9. **Security Governance** (17 controls) - Policies, training, metrics
+10. **Third-Party Management** (13 controls) - Vendor assessment, contracts
+11. **Risk Management** (10 controls) - Risk assessment, tracking
+12. **Business Continuity** (6 controls) - BCP/DR, backups
+13. **Change Management** (4 controls) - Change control, testing
+14. **Asset Management** (11 controls) - Inventory, lifecycle
+15. **Configuration Management** (15 controls) - Baselines, hardening
+16. And 10 more domains...
 
 ## Scoring Methodology
 
 ### Control-Level Scoring
 
-Each control is assessed with one of the following statuses:
-
-- **Compliant** (100 points): Control fully implemented and effective
-- **Partial** (50 points): Control partially implemented or needs improvement
+- **Compliant** (100 points): Control fully implemented, effective, documented
+- **Partial** (50 points): Control partially implemented, gaps identified
 - **Non-Compliant** (0 points): Control not implemented or ineffective
-- **Not Applicable** (excluded from scoring): Control doesn't apply to this system
-- **Not Assessed** (0 points): Control not yet evaluated
+- **Not Applicable** (N/A): Excluded from scoring
+- **Not Assessed** (0 points): Not yet evaluated
 
-### Domain Scoring
+### Domain & Overall Scoring
 
-Domain score = Average of all assessed controls in that domain (excluding N/A controls)
-
-### Overall Security Score
-
-Overall score = Average of all assessed controls across all domains (excluding N/A controls)
+- **Domain Score** = Average of assessed controls in domain (excluding N/A)
+- **Overall Score** = Average of all assessed controls (excluding N/A)
 
 ### Score Interpretation
 
-- **90-100**: Excellent - Strong security posture
-- **75-89**: Good - Solid security with minor gaps
-- **60-74**: Fair - Moderate security, several improvements needed
-- **40-59**: Poor - Significant security gaps
-- **0-39**: Critical - Immediate action required
-
-## Finding Priorities
-
-Findings are prioritized based on risk and impact:
-
-- **CRITICAL**: Immediate action required (e.g., hardcoded secrets, SQL injection)
-- **HIGH**: Address within 30 days (e.g., missing encryption, weak crypto)
-- **MEDIUM**: Address within 90 days (e.g., missing documentation, partial controls)
-- **LOW**: Address within 6 months (e.g., policy updates, minor improvements)
+- **90-100 (Excellent)**: Strong security posture, minor improvements only
+- **75-89 (Good)**: Solid security, some gaps, targeted improvements needed
+- **60-74 (Fair)**: Moderate security, systematic improvements required
+- **40-59 (Poor)**: Significant gaps, major improvements needed
+- **0-39 (Critical)**: Severe deficiencies, immediate action required
 
 ## Example Use Cases
 
 ### 1. Pre-Audit Preparation
 
-Use the interactive audit mode to prepare for SOC 2, ISO 27001, or other compliance audits:
+Use `ccf-security-auditor` to prepare for SOC 2, ISO 27001, or other compliance audits:
 
-```bash
-python3 ccf_auditor_cli.py
+```
+Use the ccf-security-auditor skill to assess our application for SOC 2 compliance
 ```
 
-Select compliance requirements during scoping, answer questions honestly, and receive a gap analysis report highlighting areas needing attention before the formal audit.
+Receive a gap analysis report highlighting areas needing attention before the formal audit.
 
-### 2. Continuous Security Assessment
+### 2. Code Security Review
 
-Integrate the code scanner into your CI/CD pipeline:
+Quickly scan a codebase for security vulnerabilities:
 
-```bash
-# In your CI/CD script
-python3 code_scanner.py . "MyApp-${BUILD_NUMBER}"
-
-# Check the score and fail the build if below threshold
-# Parse code_security_report.json for automation
+```
+Use the ccf-quick-scan skill to scan this repository
 ```
 
-### 3. Third-Party Security Review
+Get immediate feedback on hardcoded secrets, weak crypto, and other security issues.
 
-Evaluate the security posture of vendors or acquired codebases:
+### 3. Security Issue Remediation
 
-```bash
-python3 code_scanner.py /path/to/vendor/code "Vendor Name"
+Get detailed guidance on fixing specific security gaps:
+
+```
+Use the ccf-remediation-helper skill to help me implement encryption at rest for our database
 ```
 
-### 4. Security Program Maturity Assessment
+Receive step-by-step instructions, code examples, and testing procedures.
 
-Track your organization's security maturity over time by running periodic audits and comparing scores across domains.
+### 4. Continuous Security Assessment
+
+Regularly assess security posture to track improvements over time:
+
+```
+Use the ccf-security-auditor skill to conduct a quarterly security assessment
+```
+
+Compare scores and findings across quarters to measure security maturity progress.
 
 ### 5. Compliance Mapping
 
-Identify which controls satisfy multiple compliance requirements simultaneously using the CCF's built-in mappings to ISO 27001, SOC 2, NIST, etc.
+Identify which controls satisfy multiple compliance requirements:
 
-## Advanced Usage
-
-### Custom Assessments
-
-You can programmatically use the security auditor:
-
-```python
-from security_auditor import SecurityAuditor, SystemScope, ComplianceStatus
-
-# Initialize auditor
-auditor = SecurityAuditor()
-
-# Set scope
-scope = SystemScope(
-    system_name="My App",
-    primary_function="Web application",
-    data_types=["PII"],
-    architecture="Cloud-native",
-    deployment_environment="AWS",
-    compliance_requirements=["SOC 2"],
-    user_base="External",
-    criticality="High"
-)
-auditor.set_scope(scope)
-
-# Assess controls
-auditor.assess_control(
-    ccf_id="IAM-05",
-    status=ComplianceStatus.COMPLIANT,
-    evidence="MFA enabled for all users"
-)
-
-# Generate report
-report = auditor.generate_report()
-print(f"Overall Score: {report.overall_score}")
+```
+Use the ccf-security-auditor skill for a compliance gap analysis for ISO 27001 and SOC 2
 ```
 
-### Extending the Code Scanner
+Get a unified view of controls that address multiple frameworks simultaneously.
 
-Add custom security checks:
+## Finding Priorities
 
-```python
-from code_scanner import CodeSecurityScanner
+Findings are prioritized based on risk and impact:
 
-class CustomScanner(CodeSecurityScanner):
-    def _scan_custom_check(self):
-        # Your custom security check
-        pass
-```
+- **CRITICAL**: Immediate action required (24-48 hours)
+  - Hardcoded secrets in production
+  - SQL injection vulnerabilities
+  - Missing authentication
+  - Active exploits
+
+- **HIGH**: Address within 30 days
+  - Weak cryptography
+  - Missing encryption
+  - Inadequate access controls
+  - Missing MFA for privileged accounts
+
+- **MEDIUM**: Address within 90 days
+  - Policy gaps
+  - Incomplete controls
+  - Missing documentation
+  - Partial implementations
+
+- **LOW**: Address within 6 months
+  - Process improvements
+  - Enhanced monitoring
+  - Training programs
+
+## Report Formats
+
+### Markdown Report
+
+Human-readable format with:
+- Executive summary with overall score
+- Security scorecard by domain
+- Critical and high priority findings
+- Remediation roadmap with timelines
+- Compliance framework mapping
+- Detailed control assessments
+
+### JSON Data
+
+Machine-readable format for:
+- Integration with ticketing systems
+- Automated compliance tracking
+- Trend analysis and dashboards
+- Custom reporting
 
 ## Best Practices
 
-1. **Be Honest**: Accurate answers lead to actionable recommendations
-2. **Collect Evidence**: Have documentation ready (policies, configs, screenshots)
-3. **Involve Teams**: Get input from DevOps, Security, and Engineering
+1. **Be Honest and Thorough**: Accurate assessments lead to actionable improvements
+2. **Collect Evidence**: Have documentation, configs, and screenshots ready
+3. **Involve Cross-Functional Teams**: Include DevOps, Security, Engineering, and Compliance
 4. **Regular Assessments**: Run quarterly or after major changes
 5. **Track Progress**: Compare reports over time to measure improvement
-6. **Prioritize Critical**: Address critical and high-priority findings first
-7. **Document Decisions**: Record why certain controls are N/A or have risks accepted
+6. **Prioritize Critical Findings**: Address critical and high-priority items first
+7. **Document Decisions**: Record why controls are N/A or risks accepted
+8. **Use All Three Skills**: quick-scan → security-auditor → remediation-helper
+
+## Compliance Framework Coverage
+
+The Adobe CCF maps to 20+ compliance frameworks and standards:
+
+- ISO 27001 / ISO 27002 / ISO 27017 / ISO 27018
+- SOC 2 (Trust Services Criteria)
+- PCI-DSS 4.0
+- HIPAA Security Rule
+- GDPR / CCPA (Privacy)
+- FedRAMP Moderate / FedRAMP Tailored
+- NIST Cybersecurity Framework
+- NIST SP 800-53
+- CIS Controls v8
+- Cloud Security Alliance CCM
+- AICPA TSC
+- BSI C5
+- And more...
 
 ## Limitations
 
-- **Code Scanner**: Static analysis only, may have false positives/negatives
-- **No Dynamic Testing**: Does not perform runtime security testing
-- **Manual Verification**: Automated findings should be manually verified
-- **Framework Coverage**: Focuses on CCF; may not cover all framework-specific nuances
-- **Point-in-Time**: Assessment reflects security posture at time of audit
+- **Static Analysis**: Code scanning is pattern-based, not runtime testing
+- **No Dynamic Testing**: Does not perform penetration testing or runtime security testing
+- **Manual Verification Recommended**: Automated findings should be reviewed for false positives
+- **Point-in-Time Assessment**: Reflects security posture at time of audit
+- **Complementary Tool**: Should complement, not replace, professional security audits
 
 ## Contributing
 
-This tool is based on Adobe's open-source CCF v5. To update or extend:
+To update or extend the CCF data:
 
-1. Update `adobe-ccf/Open_Source_CCF.xls` with new CCF versions
-2. Run `python3 ccf_parser.py` to regenerate `ccf_data.json`
-3. Add new questions to `questionnaire.py` for new control domains
-4. Extend scanner checks in `code_scanner.py` for new security patterns
+1. Obtain the latest Adobe CCF release from [Adobe's Trust Center](https://www.adobe.com/trust/compliance/adobe-ccf.html)
+2. Replace `adobe-ccf/Open_Source_CCF.xls` with the new version
+3. Parse the Excel file to regenerate `ccf_data.json` if needed
+4. Update skill documentation to reflect any new controls or domains
 
 ## References
 
 - [Adobe Common Controls Framework (CCF)](https://www.adobe.com/trust/compliance/adobe-ccf.html)
+- [Adobe Trust Center](https://www.adobe.com/trust.html)
 - [ISO/IEC 27001](https://www.iso.org/isoiec-27001-information-security.html)
 - [SOC 2](https://www.aicpa.org/interestareas/frc/assuranceadvisoryservices/aicpasoc2report.html)
 - [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
 - [CIS Controls](https://www.cisecurity.org/controls)
+- [PCI Security Standards](https://www.pcisecuritystandards.org/)
 
 ## License
 
-This tool uses Adobe's open-source CCF framework. Please refer to Adobe's licensing terms for the CCF data.
+This repository uses Adobe's open-source CCF framework. Please refer to Adobe's licensing terms for the CCF data.
+
+## Verification
+
+This repository has been verified for:
+- **100% Adobe CCF Compliance**: All 317 controls, 25 domains, 399 evidence items
+- **100% Anthropic Skills Specification Compliance**: Correct structure, YAML frontmatter, imperative style
+
+See `VERIFICATION_REPORT.md` for detailed compliance verification.
 
 ## Support
 
-For issues, questions, or contributions, please open an issue in the repository.
+For issues, questions, or contributions:
+- Open an issue in the repository
+- Review skill documentation in `.claude/skills/*/SKILL.md`
+- Consult `VERIFICATION_REPORT.md` for implementation details
 
 ---
 
-**Disclaimer**: This tool provides a preliminary security assessment and should not replace professional security audits or compliance certifications. Always consult with qualified security professionals for production systems.
+**Disclaimer**: This toolkit provides preliminary security assessments and should not replace professional security audits or compliance certifications. Always consult with qualified security professionals for production systems and formal compliance requirements.
